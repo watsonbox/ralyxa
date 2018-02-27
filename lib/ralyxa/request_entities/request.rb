@@ -39,6 +39,10 @@ module Ralyxa
         @request['session']['attributes'][attribute_name]
       end
 
+      def dialog_state
+        @request["request"]["dialogState"]
+      end
+
       private
 
       def intent_request?

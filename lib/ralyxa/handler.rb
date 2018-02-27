@@ -1,5 +1,6 @@
 require_relative './response_builder'
 require_relative './response_entities/card'
+require_relative './response_entities/delegate_dialog'
 
 # Handler Base Class. Each Intent Handler inherits from this, and overwrites the #handle method.
 module Ralyxa
@@ -10,6 +11,10 @@ module Ralyxa
 
     def handle
       raise NotImplementedError
+    end
+
+    def delegate_dialog(response_builder = Ralyxa::ResponseBuilder, dialog_class = Ralyxa::ResponseEntities::DelegateDialog)
+      response_builder.build({}, dialog_class)
     end
 
     def respond(response_text = '', response_details = {}, response_builder = Ralyxa::ResponseBuilder)
