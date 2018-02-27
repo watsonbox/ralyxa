@@ -22,6 +22,18 @@ module Ralyxa
         validate_request(original_request) if Ralyxa.configuration.validate_requests?
       end
 
+      def id
+        @request['request']['requestId']
+      end
+
+      def api_endpoint
+        @request['context']['System']['apiEndpoint']
+      end
+
+      def api_access_token
+        @request['context']['System']['apiAccessToken']
+      end
+
       def intent_name
         return @request['request']['type'] unless intent_request?
         @request['request']['intent']['name']
