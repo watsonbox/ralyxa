@@ -13,6 +13,10 @@ module Ralyxa
       raise NotImplementedError
     end
 
+    def state
+      raise NotImplementedError
+    end
+
     def delegate_dialog(response_builder = Ralyxa::ResponseBuilder, dialog_class = Ralyxa::ResponseEntities::DelegateDialog)
       response_builder.build({}, dialog_class)
     end

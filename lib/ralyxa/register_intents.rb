@@ -27,7 +27,7 @@ module Ralyxa
 
     def intent_declarations
       @intent_declarations ||=
-        Dir.glob("#{intents_directory}/*.rb")
+        Dir.glob("#{intents_directory}/**/*.rb")
            .map { |relative_path| File.expand_path(relative_path) }
            .map { |intent_declaration_path| File.open(intent_declaration_path).read }
     end

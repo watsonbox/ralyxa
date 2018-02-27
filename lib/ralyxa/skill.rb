@@ -12,17 +12,30 @@ module Ralyxa
 
     def handle
       handler = self.class.handlers[@request.intent_name]
-      handler ? handler.new(@request).handle : warn(handler_not_found)
+
+      unless handler
+        return warn(handler_not_found)
+      end
+
+      handler_object = handler.new(@request)
+
+      unless @request.matches_session_attributes?(handler_object.session)
+        # TODO: Better to return an error indicating that it was a state mismatch
+        return warn(handler_not_found)
+      end
+
+      handler_object.handle
     end
 
     class << self
-      def intent(intent_name, handler_base_class = Ralyxa::Handler, &intent_block)
+      def intent(intent_name, session: {}, handler_base_class: Ralyxa::Handler, &intent_block)
         intent_handler = Class.new(handler_base_class)
         intent_handler.send(:define_method, :handle, &intent_block)
+        intent_handler.send(:define_method, :session) { session }
         @handlers[intent_name] = intent_handler
       end
 
-      def handle(request, alexa_request_wrapper = Ralyxa::RequestEntities::Request)
+      def handle(request, alexa_request_wrapper: Ralyxa::RequestEntities::Request)
         new(alexa_request_wrapper.new(request)).handle
       end
 

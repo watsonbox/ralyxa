@@ -35,8 +35,13 @@ module Ralyxa
         @request['session']['new']
       end
 
-      def session_attribute(attribute_name)
-        @request['session']['attributes'][attribute_name]
+      def session_attribute(*attribute_names)
+        @request.dig("session", "attributes", *attribute_names)
+      end
+
+      def matches_session_attributes?(attributes)
+        current_attributes = session_attribute || {}
+        current_attributes.merge(attributes) == current_attributes
       end
 
       def dialog_state
